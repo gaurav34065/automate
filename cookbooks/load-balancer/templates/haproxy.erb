@@ -1,0 +1,8 @@
+# Set ENABLED to 1 if you want the init script to start haproxy.
+<% if @haproxy_enabled %>
+<%="ENABLED=1"%>
+<% else %>
+<%="ENABLED=0"%>
+<% end %>
+# Add extra flags here.
+#EXTRAOPTS="-de -m 16"
