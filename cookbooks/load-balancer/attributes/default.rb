@@ -1,6 +1,7 @@
 default['haproxy']['is_enabled'] = true
 default['haproxy']['enable_path'] = '/etc/default'
 default['haproxy']['config_path'] = '/etc/haproxy'
+default['haproxy']['socket'] = '/var/run/haproxy.stat'
 default['haproxy']['algorithm'] = 'roundrobin'
 default['haproxy']['is_stats_enabled'] = true
 default['haproxy']['stats_uri'] = '/haproxy-stats'
