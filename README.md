@@ -43,29 +43,33 @@ Usage :-
 
 As i am using chef_client for provisioning, to use this you'll need to have a hosted chef account and chef installed along with vagrant and oracle virtual-box.
 
-1.) Configure below variables for your chef account before moving forward. (EDIT these variables in host_scaler.sh and parent Vagrantfile)
+1.) Install cygwin or gitbash to run bash commands on host machine.
+
+2.) Configure below variables for your chef account before moving forward. (EDIT these variables in host_scaler.sh and parent Vagrantfile)
 
 chef.chef_server_url = "https://api.chef.io/organizations/sbgs"
 chef.validation_key_path = "sbgs-validator.pem"
 chef.validation_client_name = "sbgs-validator"
 
-2.) Push the cookbooks on your chef server using knife.
+3.) Push the cookbooks on your chef server using knife.
 
-3.) Run a "vagrant up". This will download and boot three seperate VMs and provision them using cookbooks from chef server.
+4.) Go to project diractory(~/mark in this case). Run a "vagrant up". This will download and boot three seperate VMs and provision them using cookbooks from chef server.
 
-4.) In your host machine, from any browser you can access haproxy stats at "10.0.0.200:90/haproxy-stats".
+5.) In your host machine, from any browser you can access haproxy stats at "10.0.0.200:90/haproxy-stats".
 Try hitting  load balancer at 10.0.0.200. It will re-direct it you to any of the backend server.
 
 ------------------------------------------------------------------------------------------------------------------
 
 Test Autoscaling :-
 
-1.) Install cygwin or gitbash to run host_scaler.sh on host machine.
+1.) Two daemons starts executing automatically after the provisioning on load-balancer, we need to start a daemon on host also, go on ~/mark/scripts and execute
+./host_scaler.sh to start host process/daemon.
 
-2.) Two deamons starts executing automatically after the provisioning of load-balancer, thus go on ~/mark/scripts and execute
-./host_scaler.sh to start host process.
+2.)There is a loop.sh script which hits the haproxy infinitely until forcefully stopped. This is used to generate traffic on load-balancer. Run this in multiple windows of shell to increase the traffic.
 
-3.)There is a loop.sh script which hits the haproxy infinitely until forcefully stopped. This is used to generate traffic on load-balancer. Run this in multiple windows of shell to increase the traffic.
+3.)VM's get created and destroyed based on current traffic.
 
-4.)VM's get created and destroyed based on current traffic.
+NOTE : Creation of a brand new VM takes time(creation + provisioning). Thus i am not destroying the VM when i scale down. Instead i am using vagrant halt to shud the VM down so that it can be used later.
+
+------------------------------------------------------------------------------------------------------------------
 
