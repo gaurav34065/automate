@@ -5,6 +5,7 @@ global
         user haproxy
         group haproxy
         daemon
+        stats socket <%= @socket %>
 
 defaults
         log     global
@@ -22,6 +23,14 @@ defaults
         errorfile 503 /etc/haproxy/errors/503.http
         errorfile 504 /etc/haproxy/errors/504.http
 
+listen stats *:90
+  <% if @stats_enable %>
+  <%= "stats enable" %>
+  <% else node['haproxy']['is_stats_enabled'] %>
+  <%= "stats disable" %>
+  <% end %>
+  stats uri <%= @stats_uri %>
+
 frontend http
   bind *:80
   mode http
@@ -33,13 +42,6 @@ backend web-backends
   option forwardfor
 
   <% @backend_servers.each_with_index do |ipaddress, index| %>
-  <%= "server webserver#{index+1} #{ipaddress}:80" %>
+  <%= "server webserver#{index+1} #{ipaddress}:80 check" %>
   <% end %>
 
-listen stats *:90
-  <% if @stats_enable %>
-  <%= "stats enable" %>
-  <% else node['haproxy']['is_stats_enabled'] %>
-  <%= "stats disable" %>
-  <% end %>
-  stats uri <%= @stats_uri %>
