@@ -43,6 +43,9 @@ Usage :-
 
 As i am using chef_client for provisioning, to use this you'll need to have a hosted chef account and chef installed along with vagrant and oracle virtual-box.
 
+RENAME THE FOLDER FROM "automate-master" to "mark" and save the folder in your home directory. (~/mark)
+Because i have written scripts that requires that exact path to execute the scripts.
+
 1.) Install cygwin or gitbash to run bash commands on host machine.
 
 2.) Configure below variables for your chef account before moving forward. (EDIT these variables in host_scaler.sh and parent Vagrantfile)
